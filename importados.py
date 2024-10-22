@@ -389,7 +389,10 @@ def generate_html(df, filename='index.html'):
         <body>
 
             <header>
-                <h1>fily</h1><br>
+                <h1>fily</h1>
+                
+                <h2> ropa de USA a ARG </h2> 
+                
                 <div class="social-media-icons">
                     <a href="https://www.instagram.com/yourprofile">
                         <img src="instagram.png" alt="Instagram"> 
