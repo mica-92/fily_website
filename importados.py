@@ -463,8 +463,6 @@ def create_html_files(df):
     # Create the catalogue (with price) version
     generate_html(df, filename='catalogue.html', include_price=True)
 
-
-
 # Function to search available items
 def search_available_items():
     df = pd.read_csv(AVAILABLE_FILE)
