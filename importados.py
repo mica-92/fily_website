@@ -189,7 +189,7 @@ def calculate_net_profit(start_date, end_date):
 
     print(f"Net Profit: {net_profit}, Number of Products Sold: {number_of_products}")
 
-def generate_html(df, filename='products.html'):
+def generate_html(df, filename='index.html'):
     # Create a DataFrame to hold unique products and their sizes
     unique_products = {}
 
@@ -218,7 +218,10 @@ def generate_html(df, filename='products.html'):
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>fily - de USA a ARG</title>
-            
+
+            <!-- Favicon -->
+            <link rel="icon" href="favicon.ico" type="image/x-icon">
+
             <!-- Google Fonts -->
             <link href="https://fonts.googleapis.com/css2?family=YourCustomFont:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&display=swap" rel="stylesheet">
@@ -240,25 +243,25 @@ def generate_html(df, filename='products.html'):
 
                 header h1 {
                     font-family: 'IM Fell DW Pica', serif;
-                    font-size: 2.5em; /* Reduced logo size to fit with font */
+                    font-size: 3.5em;
                     margin: 0;
                 }
 
                 header h2 {
                     font-family: 'IM Fell DW Pica', serif;
                     font-size: 1.5em;
-                    margin: 20px 0; /* Space between title and subtitle */
+                    margin: 20px 0;
                 }
 
                 .social-media-icons {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    gap: 10px; /* Space between icons */
+                    gap: 10px;
                 }
 
                 .social-media-icons img {
-                    width: 30px; /* Resize icons */
+                    width: 30px;
                     height: auto;
                 }
 
@@ -268,7 +271,7 @@ def generate_html(df, filename='products.html'):
                     margin-top: 10px;
                     font-size: 0.9em;
                     display: inline-block;
-                    width: 50%;  /* Info bar now occupies 50% of the page */
+                    width: 50%;
                     border-top: 1px solid #333;
                     border-bottom: 1px solid #333;
                 }
@@ -296,11 +299,11 @@ def generate_html(df, filename='products.html'):
                 }
 
                 .product img {
-                    width: 100%; /* Fixes image stretching issue */
-                    height: auto;
-                    max-width: 300px;
-                    object-fit: cover;
-                    border-bottom: 2px solid black; /* Changed the border color to black */
+                    width: 300px;
+                    height: 300px;
+                    object-fit: cover; /* This ensures the image is centered and cropped if necessary */
+                    object-position: center; /* Keep the center of the image in view */
+                    border-bottom: 2px solid black;
                     display: block;
                     margin: 0 auto;
                 }
@@ -341,7 +344,7 @@ def generate_html(df, filename='products.html'):
                 footer {
                     background-color: #333;
                     color: white;
-                    padding: 10px; /* Adjusted footer size */
+                    padding: 10px;
                     text-align: center;
                     position: fixed;
                     width: 100%;
@@ -349,8 +352,8 @@ def generate_html(df, filename='products.html'):
                 }
 
                 footer a {
-                    color: white; /* Changed link color to white */
-                    font-weight: bold; /* Made the link bold */
+                    color: white;
+                    font-weight: bold;
                 }
 
                 @media (max-width: 768px) {
@@ -359,11 +362,11 @@ def generate_html(df, filename='products.html'):
                     }
 
                     .info-bar {
-                        width: 90%;  /* Makes the info bar responsive */
+                        width: 90%;
                     }
 
                     .product img {
-                        max-width: 100%;  /* Ensures images fit in smaller screens */
+                        max-width: 100%;
                     }
                 }
 
@@ -373,7 +376,7 @@ def generate_html(df, filename='products.html'):
                     }
 
                     .info-bar {
-                        width: 90%;  /* Makes the info bar responsive for very small screens */
+                        width: 90%;
                     }
                 }
             </style>
@@ -386,8 +389,7 @@ def generate_html(df, filename='products.html'):
         <body>
 
             <header>
-                <h1>fily.</h1>
-                <h2>de USA a ARG<br></h2>
+                <h1>fily</h1><br>
                 <div class="social-media-icons">
                     <a href="https://www.instagram.com/yourprofile">
                         <img src="instagram.png" alt="Instagram"> 
@@ -403,7 +405,7 @@ def generate_html(df, filename='products.html'):
 
         for product_id, details in unique_products.items():
             sizes_html = ''.join([f"<span class='size'>{size}</span>" for size in details['Sizes']])
-            price_without_decimal = int(details['Expected Price (USD)'])  # Remove decimal places from price
+            price_without_decimal = int(details['Expected Price (USD)'])
 
             f.write(f"""
                 <div class="product">
@@ -427,6 +429,7 @@ def generate_html(df, filename='products.html'):
         """)
 
     print(f"HTML file {filename} generated successfully.")
+
 
 
 # Function to search available items

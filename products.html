@@ -3,10 +3,7 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>fily - de USA a ARG</title>
-
-            <!-- Favicon -->
-            <link rel="icon" href="favicon.ico" type="image/x-icon">
-
+            
             <!-- Google Fonts -->
             <link href="https://fonts.googleapis.com/css2?family=YourCustomFont:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&display=swap" rel="stylesheet">
@@ -28,25 +25,25 @@
 
                 header h1 {
                     font-family: 'IM Fell DW Pica', serif;
-                    font-size: 3.5em;
+                    font-size: 3.5em; /* Reduced logo size to fit with font */
                     margin: 0;
                 }
 
                 header h2 {
                     font-family: 'IM Fell DW Pica', serif;
                     font-size: 1.5em;
-                    margin: 20px 0;
+                    margin: 20px 0; /* Space between title and subtitle */
                 }
 
                 .social-media-icons {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    gap: 10px;
+                    gap: 10px; /* Space between icons */
                 }
 
                 .social-media-icons img {
-                    width: 30px;
+                    width: 30px; /* Resize icons */
                     height: auto;
                 }
 
@@ -56,7 +53,7 @@
                     margin-top: 10px;
                     font-size: 0.9em;
                     display: inline-block;
-                    width: 50%;
+                    width: 50%;  /* Info bar now occupies 50% of the page */
                     border-top: 1px solid #333;
                     border-bottom: 1px solid #333;
                 }
@@ -84,11 +81,11 @@
                 }
 
                 .product img {
-                    width: 300px;
-                    height: 300px;
-                    object-fit: cover; /* This ensures the image is centered and cropped if necessary */
-                    object-position: center; /* Keep the center of the image in view */
-                    border-bottom: 2px solid black;
+                    width: 100%; /* Fixes image stretching issue */
+                    height: auto;
+                    max-width: 300px;
+                    object-fit: cover;
+                    border-bottom: 2px solid black; /* Changed the border color to black */
                     display: block;
                     margin: 0 auto;
                 }
@@ -129,7 +126,7 @@
                 footer {
                     background-color: #333;
                     color: white;
-                    padding: 10px;
+                    padding: 10px; /* Adjusted footer size */
                     text-align: center;
                     position: fixed;
                     width: 100%;
@@ -137,8 +134,8 @@
                 }
 
                 footer a {
-                    color: white;
-                    font-weight: bold;
+                    color: white; /* Changed link color to white */
+                    font-weight: bold; /* Made the link bold */
                 }
 
                 @media (max-width: 768px) {
@@ -147,11 +144,11 @@
                     }
 
                     .info-bar {
-                        width: 90%;
+                        width: 90%;  /* Makes the info bar responsive */
                     }
 
                     .product img {
-                        max-width: 100%;
+                        max-width: 100%;  /* Ensures images fit in smaller screens */
                     }
                 }
 
@@ -161,7 +158,7 @@
                     }
 
                     .info-bar {
-                        width: 90%;
+                        width: 90%;  /* Makes the info bar responsive for very small screens */
                     }
                 }
             </style>
