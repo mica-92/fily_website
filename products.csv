@@ -1,0 +1,4 @@
+ID,Type,Gender,Brand,Name,Color,Cost (USD),Expected Price (USD),Trip #,Sizes,Count
+SJ01,S,J,Nike,Air Jordan 1 Low (M),"White, Black, Gold",63.25,200.0,1,9,1.0
+HW01,H,W,Northface,Buzo Negro Logo,Black,39.0,80.0,1,M,2.0
+SJ02,S,J,Nike,Air Jordan 1 Mid SE (W),"Dark Grey",71.23,210.0,1,"5.5, 7",2.0
