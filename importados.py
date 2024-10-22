@@ -189,9 +189,16 @@ def calculate_net_profit(start_date, end_date):
 
     print(f"Net Profit: {net_profit}, Number of Products Sold: {number_of_products}")
 
-def generate_html(df, filename='index.html'):
+def generate_html(df, filename='index.html', include_price=False):
     # Create a DataFrame to hold unique products and their sizes
     unique_products = {}
+
+    # Sort the products based on the specified order: S, J, H, T, O
+    type_order = ['S', 'J', 'H', 'T', 'O']
+    
+    # Sort the dataframe by Type using a categorical type for the order
+    df['Type'] = pd.Categorical(df['Type'], categories=type_order, ordered=True)
+    df = df.sort_values('Type')  # Sort the DataFrame by Type
 
     for _, row in df.iterrows():
         product_id = row['ID']
@@ -213,7 +220,7 @@ def generate_html(df, filename='index.html'):
     
     # Start generating the HTML
     with open(filename, 'w', encoding='utf-8') as f:
-        f.write("""<html lang="en">
+        f.write(f"""<html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -227,45 +234,45 @@ def generate_html(df, filename='index.html'):
             <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&display=swap" rel="stylesheet">
 
             <style>
-                body {
+                body {{
                     font-family: 'Open Sans', sans-serif;
                     margin: 0;
                     padding: 0;
                     background-color: #f9f9f9;
                     color: #333;
-                }
+                }}
 
-                header {
+                header {{
                     color: black;
                     padding: 20px;
                     text-align: center;
-                }
+                }}
 
-                header h1 {
+                header h1 {{
                     font-family: 'IM Fell DW Pica', serif;
                     font-size: 3.5em;
                     margin: 0;
-                }
+                }}
 
-                header h2 {
+                header h2 {{
                     font-family: 'IM Fell DW Pica', serif;
                     font-size: 1.5em;
                     margin: 20px 0;
-                }
+                }}
 
-                .social-media-icons {
+                .social-media-icons {{
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     gap: 10px;
-                }
+                }}
 
-                .social-media-icons img {
+                .social-media-icons img {{
                     width: 30px;
                     height: auto;
-                }
+                }}
 
-                .info-bar {
+                .info-bar {{
                     padding: 10px;
                     text-align: center;
                     margin-top: 10px;
@@ -274,16 +281,16 @@ def generate_html(df, filename='index.html'):
                     width: 50%;
                     border-top: 1px solid #333;
                     border-bottom: 1px solid #333;
-                }
+                }}
 
-                .product-container {
+                .product-container {{
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: space-around;
                     padding: 20px;
-                }
+                }}
 
-                .product {
+                .product {{
                     background-color: white;
                     border-radius: 8px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -292,56 +299,63 @@ def generate_html(df, filename='index.html'):
                     width: calc(25% - 40px);
                     text-align: center;
                     transition: transform 0.2s;
-                }
+                }}
 
-                .product:hover {
+                .product:hover {{
                     transform: scale(1.05);
-                }
+                }}
 
-                .product img {
-                    width: 300px;
-                    height: 300px;
-                    object-fit: cover; /* This ensures the image is centered and cropped if necessary */
-                    object-position: center; /* Keep the center of the image in view */
+                .product img {{
+                    width: 100%;
+                    height: auto;
+                    max-width: 300px;
+                    object-fit: cover;
+                    object-position: center;
                     border-bottom: 2px solid black;
                     display: block;
                     margin: 0 auto;
-                }
+                }}
 
-                .product h3 {
+                .product h3 {{
                     font-family: 'IM Fell DW Pica', serif;
                     font-size: 1.2em;
                     margin: 15px 0;
-                }
+                }}
 
-                .product p {
+                .product p {{
                     font-size: 1em;
                     margin: 5px 0;
-                }
+                }}
 
-                .price {
+                .product-id {{
+                    font-size: 1em;
+                    margin: 5px 0;
+                    font-weight: bold;
+                }}
+
+                .price {{
                     font-size: 1.2em;
                     margin: 10px 0;
                     font-weight: bold;
-                }
+                }}
 
-                .sizes-container {
+                .sizes-container {{
                     display: flex;
                     justify-content: center;
                     gap: 5px;
                     margin-top: 10px;
-                }
+                }}
 
-                .size {
+                .size {{
                     padding: 5px 10px;
                     border: 1px solid black;
                     border-radius: 5px;
                     font-size: 1em;
                     background-color: white;
                     color: black;
-                }
+                }}
 
-                footer {
+                footer {{
                     background-color: #333;
                     color: white;
                     padding: 10px;
@@ -349,41 +363,41 @@ def generate_html(df, filename='index.html'):
                     position: fixed;
                     width: 100%;
                     bottom: 0;
-                }
+                }}
 
-                footer a {
+                footer a {{
                     color: white;
                     font-weight: bold;
-                }
+                }}
 
-                @media (max-width: 768px) {
-                    .product {
+                @media (max-width: 768px) {{
+                    .product {{
                         width: calc(50% - 40px);
-                    }
+                    }}
 
-                    .info-bar {
+                    .info-bar {{
                         width: 90%;
-                    }
+                    }}
 
-                    .product img {
+                    .product img {{
                         max-width: 100%;
-                    }
-                }
+                    }}
+                }}
 
-                @media (max-width: 500px) {
-                    .product {
+                @media (max-width: 500px) {{
+                    .product {{
                         width: calc(100% - 40px);
-                    }
+                    }}
 
-                    .info-bar {
+                    .info-bar {{
                         width: 90%;
-                    }
-                }
+                    }}
+                }}
             </style>
             <script>
-                function openPopup() {
+                function openPopup() {{
                     window.open('sizes.png', 'popup', 'width=600,height=600');
-                }
+                }}
             </script>
         </head>
         <body>
@@ -394,10 +408,10 @@ def generate_html(df, filename='index.html'):
                 <h2> ropa de USA a ARG </h2> 
                 
                 <div class="social-media-icons">
-                    <a href="https://www.instagram.com/yourprofile">
+                    <a href="https://www.instagram.com/fily.ropa/">
                         <img src="instagram.png" alt="Instagram"> 
                     </a>
-                    <a href="https://api.whatsapp.com/send?phone=yourphonenumber">
+                    <a href="https://api.whatsapp.com/send?phone=5491122887256">
                         <img src="whatsapp.png" alt="WhatsApp">
                     </a>
                 </div>
@@ -409,12 +423,20 @@ def generate_html(df, filename='index.html'):
         for product_id, details in unique_products.items():
             sizes_html = ''.join([f"<span class='size'>{size}</span>" for size in details['Sizes']])
             price_without_decimal = int(details['Expected Price (USD)'])
+            price_ars = price_without_decimal * 1100  # ARS price conversion
+
+            # Include price only if requested (catalogue mode)
+            price_html = f"""
+                <p class='price'>${price_without_decimal} USD</p>
+                <p class='price'>${price_ars:,} ARS</p>
+            """ if include_price else ""
 
             f.write(f"""
                 <div class="product">
                     <img src='{details['Image']}' alt='{details['Name']}'>
                     <h3>{details['Name']}</h3>
-                    <p class="price">${price_without_decimal} USD</p>
+                    <p class="product-id">ID: {product_id}</p>
+                    {price_html}
                     <div class="sizes-container">
                         {sizes_html}
                     </div>
@@ -432,6 +454,14 @@ def generate_html(df, filename='index.html'):
         """)
 
     print(f"HTML file {filename} generated successfully.")
+
+# Function to create both internal and catalogue versions
+def create_html_files(df):
+    # Create the internal (without price) version
+    generate_html(df, filename='index.html', include_price=False)
+    
+    # Create the catalogue (with price) version
+    generate_html(df, filename='catalogue.html', include_price=True)
 
 
 
@@ -498,6 +528,130 @@ def view_available_products():
 
     return available_df  # Return the DataFrame for further use
 
+# Function to modify a product
+def modify_product():
+    df = pd.read_csv(PRODUCTS_FILE)
+    
+    product_id = input("Enter the product ID to modify: ")
+    
+    if product_id not in df['ID'].values:
+        print("Product ID not found.")
+        return
+    
+    # Display the current product details
+    current_product = df[df['ID'] == product_id].iloc[0]
+    print(f"\nCurrent details for product {product_id}:")
+    print(current_product)
+    
+    # Get the new values from the user (or leave unchanged if they press Enter)
+    new_type = input(f"Enter new type ({current_product['Type']}): ") or current_product['Type']
+    new_gender = input(f"Enter new gender ({current_product['Gender']}): ") or current_product['Gender']
+    new_brand = input(f"Enter new brand ({current_product['Brand']}): ") or current_product['Brand']
+    new_name = input(f"Enter new name ({current_product['Name']}): ") or current_product['Name']
+    new_color = input(f"Enter new color ({current_product['Color']}): ") or current_product['Color']
+    new_cost = input(f"Enter new cost ({current_product['Cost (USD)']}): ") or current_product['Cost (USD)']
+    new_price = input(f"Enter new expected price ({current_product['Expected Price (USD)']}): ") or current_product['Expected Price (USD)']
+    new_sizes = input(f"Enter new sizes ({current_product['Sizes']}): ") or current_product['Sizes']
+    new_trip_number = input(f"Enter new trip number ({current_product['Trip #']}): ") or current_product['Trip #']
+    
+    # Update the product in the DataFrame
+    df.loc[df['ID'] == product_id, ['Type', 'Gender', 'Brand', 'Name', 'Color', 'Cost (USD)', 'Expected Price (USD)', 'Sizes', 'Trip #']] = \
+        [new_type, new_gender, new_brand, new_name, new_color, float(new_cost), float(new_price), new_sizes, new_trip_number]
+    
+    # Save the updated DataFrame
+    df.to_csv(PRODUCTS_FILE, index=False)
+    print(f"Product {product_id} updated successfully.")
+    
+    # Now update available.csv
+    available_df = pd.read_csv(AVAILABLE_FILE)
+    
+    # Remove the old entries for the product in available.csv
+    available_df = available_df[available_df['ID'] != product_id]
+    
+    # Add updated product sizes and counts back into available.csv
+    size_counts = {size.strip(): new_sizes.split(',').count(size.strip()) for size in new_sizes.split(',')}
+    
+    # Create a list of new rows to add
+    new_rows = []
+    for size, count in size_counts.items():
+        new_rows.append({
+            'ID': product_id,
+            'Type': new_type,
+            'Gender': new_gender,
+            'Brand': new_brand,
+            'Name': new_name,
+            'Color': new_color,
+            'Cost (USD)': float(new_cost),
+            'Expected Price (USD)': float(new_price),
+            'Trip #': new_trip_number,
+            'Sizes': size,
+            'Count': count
+        })
+    
+    # Concatenate the new rows to the available DataFrame
+    available_df = pd.concat([available_df, pd.DataFrame(new_rows)], ignore_index=True)
+    
+    # Save the updated available_df to available.csv
+    available_df.to_csv(AVAILABLE_FILE, index=False)
+    print(f"Product {product_id} updated in available.csv successfully.")
+
+# Function to delete a product
+def delete_product():
+    df = pd.read_csv(PRODUCTS_FILE)
+    
+    product_id = input("Enter the product ID to delete: ")
+    
+    if product_id not in df['ID'].values:
+        print("Product ID not found.")
+        return
+    
+    # Confirm deletion
+    confirm = input(f"Are you sure you want to delete product {product_id}? (y/n): ").lower()
+    if confirm != 'y':
+        print("Deletion canceled.")
+        return
+    
+    # Remove the product from the DataFrame
+    df = df[df['ID'] != product_id]
+    df.to_csv(PRODUCTS_FILE, index=False)
+    print(f"Product {product_id} deleted from products.csv.")
+    
+    # Now remove the product from available.csv
+    available_df = pd.read_csv(AVAILABLE_FILE)
+    available_df = available_df[available_df['ID'] != product_id]
+    available_df.to_csv(AVAILABLE_FILE, index=False)
+    print(f"Product {product_id} deleted from available.csv.")
+
+# Function to modify a sale
+def modify_sale():
+    sold_df = pd.read_csv(SOLD_FILE)
+    
+    product_id = input("Enter the product ID of the sale to modify: ")
+    
+    # Check if the product exists in sold.csv
+    if product_id not in sold_df['ID'].values:
+        print("Product ID not found in sales records.")
+        return
+    
+    # Display the current sale record
+    current_sale = sold_df[sold_df['ID'] == product_id].iloc[0]
+    print(f"\nCurrent details for sale of product {product_id}:")
+    print(current_sale)
+    
+    # Get the new sale values from the user
+    new_size_sold = input(f"Enter new size sold ({current_sale['Size Sold']}): ") or current_sale['Size Sold']
+    new_selling_date = input(f"Enter new selling date ({current_sale['Selling Date']}): ") or current_sale['Selling Date']
+    new_final_price = input(f"Enter new final price ({current_sale['Final Price']}): ") or current_sale['Final Price']
+    new_customer = input(f"Enter new customer name ({current_sale['Customer']}): ") or current_sale['Customer']
+    new_notes = input(f"Enter new notes ({current_sale['Notes']}): ") or current_sale['Notes']
+    
+    # Update the sale in the DataFrame
+    sold_df.loc[sold_df['ID'] == product_id, ['Size Sold', 'Selling Date', 'Final Price', 'Customer', 'Notes']] = \
+        [new_size_sold, new_selling_date, float(new_final_price), new_customer, new_notes]
+    
+    # Save the updated DataFrame
+    sold_df.to_csv(SOLD_FILE, index=False)
+    print(f"Sale record for product {product_id} updated successfully.")
 
 # Main menu function
 def main_menu():
@@ -511,7 +665,10 @@ def main_menu():
         print("6. Create HTML Report of Available Items")
         print("7. Search Available Items")
         print("8. View Sales Records")
-        print("9. Exit")
+        print("9. Modify a Product")
+        print("10. Delete a Product")
+        print("11. Modify a Sale")
+        print("12. Exit")
 
         choice = input("Choose an option: ")
         
@@ -528,16 +685,21 @@ def main_menu():
             end_date = input("Enter end date (YYYY-MM-DD): ")
             calculate_net_profit(start_date, end_date)
         elif choice == '6':
-            generate_html(available_df)  # Pass the available DataFrame to the generate_html function
+            create_html_files(available_df)  # Pass the available DataFrame to the generate_html function
         elif choice == '7':
             search_available_items()
         elif choice == '8':
             view_sales_records()
         elif choice == '9':
+            modify_product()
+        elif choice == '10':
+            delete_product()
+        elif choice == '11':
+            modify_sale()
+        elif choice == '12':
             break
         else:
             print("Invalid choice. Please try again.")
-
 
 # Run the main menu
 if __name__ == "__main__":
