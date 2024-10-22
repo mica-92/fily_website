@@ -189,7 +189,6 @@ def calculate_net_profit(start_date, end_date):
 
     print(f"Net Profit: {net_profit}, Number of Products Sold: {number_of_products}")
 
-# Function to generate HTML page for available products
 def generate_html(df, filename='products.html'):
     # Create a DataFrame to hold unique products and their sizes
     unique_products = {}
@@ -203,9 +202,7 @@ def generate_html(df, filename='products.html'):
                 'Brand': row['Brand'],
                 'Name': row['Name'],
                 'Color': row['Color'],
-                'Cost (USD)': row['Cost (USD)'],
                 'Expected Price (USD)': row['Expected Price (USD)'],
-                'Trip #': row['Trip #'],
                 'Sizes': [row['Sizes']],  # Convert sizes
                 'Image': f"images/{product_id}.png"  # Path to the image
             }
@@ -215,52 +212,222 @@ def generate_html(df, filename='products.html'):
                 unique_products[product_id]['Sizes'].append(row['Sizes'])
     
     # Start generating the HTML
-    with open(filename, 'w') as f:
-        f.write("""<html>
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write("""<html lang="en">
         <head>
-            <title>M&N Importaciones</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>fily - de USA a ARG</title>
+            
+            <!-- Google Fonts -->
+            <link href="https://fonts.googleapis.com/css2?family=YourCustomFont:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&display=swap" rel="stylesheet">
+
             <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-                h1 { text-align: center; margin-top: 20px; }
-                h2 { text-align: center; margin-top: 0; }
-                .product-container { display: flex; flex-wrap: wrap; justify-content: space-around; }
-                .product { border: 1px solid #ccc; border-radius: 5px; margin: 10px; padding: 10px; text-align: center; width: calc(50% - 40px); box-sizing: border-box; }
-                .product img { max-width: 300px; height: auto; }  /* Set max width for images */
-                @media (max-width: 600px) {
-                    .product { width: 100%; }
+                body {
+                    font-family: 'Open Sans', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f9f9f9;
+                    color: #333;
                 }
-                .logos { display: flex; justify-content: center; margin-top: 20px; }
-                .logos img { width: 40px; height: auto; margin: 0 10px; }
+
+                header {
+                    color: black;
+                    padding: 20px;
+                    text-align: center;
+                }
+
+                header h1 {
+                    font-family: 'IM Fell DW Pica', serif;
+                    font-size: 2.5em; /* Reduced logo size to fit with font */
+                    margin: 0;
+                }
+
+                header h2 {
+                    font-family: 'IM Fell DW Pica', serif;
+                    font-size: 1.5em;
+                    margin: 20px 0; /* Space between title and subtitle */
+                }
+
+                .social-media-icons {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px; /* Space between icons */
+                }
+
+                .social-media-icons img {
+                    width: 30px; /* Resize icons */
+                    height: auto;
+                }
+
+                .info-bar {
+                    padding: 10px;
+                    text-align: center;
+                    margin-top: 10px;
+                    font-size: 0.9em;
+                    display: inline-block;
+                    width: 50%;  /* Info bar now occupies 50% of the page */
+                    border-top: 1px solid #333;
+                    border-bottom: 1px solid #333;
+                }
+
+                .product-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-around;
+                    padding: 20px;
+                }
+
+                .product {
+                    background-color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    margin: 20px;
+                    padding: 20px;
+                    width: calc(25% - 40px);
+                    text-align: center;
+                    transition: transform 0.2s;
+                }
+
+                .product:hover {
+                    transform: scale(1.05);
+                }
+
+                .product img {
+                    width: 100%; /* Fixes image stretching issue */
+                    height: auto;
+                    max-width: 300px;
+                    object-fit: cover;
+                    border-bottom: 2px solid black; /* Changed the border color to black */
+                    display: block;
+                    margin: 0 auto;
+                }
+
+                .product h3 {
+                    font-family: 'IM Fell DW Pica', serif;
+                    font-size: 1.2em;
+                    margin: 15px 0;
+                }
+
+                .product p {
+                    font-size: 1em;
+                    margin: 5px 0;
+                }
+
+                .price {
+                    font-size: 1.2em;
+                    margin: 10px 0;
+                    font-weight: bold;
+                }
+
+                .sizes-container {
+                    display: flex;
+                    justify-content: center;
+                    gap: 5px;
+                    margin-top: 10px;
+                }
+
+                .size {
+                    padding: 5px 10px;
+                    border: 1px solid black;
+                    border-radius: 5px;
+                    font-size: 1em;
+                    background-color: white;
+                    color: black;
+                }
+
+                footer {
+                    background-color: #333;
+                    color: white;
+                    padding: 10px; /* Adjusted footer size */
+                    text-align: center;
+                    position: fixed;
+                    width: 100%;
+                    bottom: 0;
+                }
+
+                footer a {
+                    color: white; /* Changed link color to white */
+                    font-weight: bold; /* Made the link bold */
+                }
+
+                @media (max-width: 768px) {
+                    .product {
+                        width: calc(50% - 40px);
+                    }
+
+                    .info-bar {
+                        width: 90%;  /* Makes the info bar responsive */
+                    }
+
+                    .product img {
+                        max-width: 100%;  /* Ensures images fit in smaller screens */
+                    }
+                }
+
+                @media (max-width: 500px) {
+                    .product {
+                        width: calc(100% - 40px);
+                    }
+
+                    .info-bar {
+                        width: 90%;  /* Makes the info bar responsive for very small screens */
+                    }
+                }
             </style>
+            <script>
+                function openPopup() {
+                    window.open('sizes.png', 'popup', 'width=600,height=600');
+                }
+            </script>
         </head>
         <body>
-            <h1>M&N Importaciones</h1>
-            <h2>Conéctate con nosotros</h2>
-            <div class="logos">
-                <a href="https://www.instagram.com/yourprofile"><img src="images/instagram.png" alt="Instagram"></a>
-                <a href="https://api.whatsapp.com/send?phone=yourphonenumber"><img src="images/whatsapp.png" alt="WhatsApp"></a>
-            </div>
+
+            <header>
+                <h1>fily.</h1>
+                <h2>de USA a ARG<br></h2>
+                <div class="social-media-icons">
+                    <a href="https://www.instagram.com/yourprofile">
+                        <img src="instagram.png" alt="Instagram"> 
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=yourphonenumber">
+                        <img src="whatsapp.png" alt="WhatsApp">
+                    </a>
+                </div>
+            </header>
+
             <div class="product-container">
         """)
 
         for product_id, details in unique_products.items():
+            sizes_html = ''.join([f"<span class='size'>{size}</span>" for size in details['Sizes']])
+            price_without_decimal = int(details['Expected Price (USD)'])  # Remove decimal places from price
+
             f.write(f"""
                 <div class="product">
                     <img src='{details['Image']}' alt='{details['Name']}'>
-                    <p><strong>Brand:</strong> {details['Brand']}</p>
-                    <p><strong>Name:</strong> {details['Name']}</p>
-                    <p><strong>Color:</strong> {details['Color']}</p>
-                    <p><strong>Price:</strong> ${details['Expected Price (USD)']} USD</p>
-                    <p><strong>Available Sizes:</strong> {', '.join(details['Sizes'])}</p>
+                    <h3>{details['Name']}</h3>
+                    <p class="price">${price_without_decimal} USD</p>
+                    <div class="sizes-container">
+                        {sizes_html}
+                    </div>
                 </div>
             """)
 
-        f.write("""</div>
+        f.write("""
+            </div>
+            <footer>
+                <p>Los talles de las zapatillas son de US Men.  
+                    <a href="javascript:void(0)" onclick="openPopup()">Tabla de Conversiones</a>.</p>
+            </footer>
         </body>
         </html>
         """)
 
     print(f"HTML file {filename} generated successfully.")
+
 
 # Function to search available items
 def search_available_items():
